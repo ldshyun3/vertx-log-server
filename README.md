@@ -1,3 +1,6 @@
+# Test Server
+http://raindays.net:8090
+
 # Arachtecture
 Server
 - Vert.x 3.2.0
@@ -32,9 +35,6 @@ It has 1 byte heading to figure out message type.
 	    required string roomId = 1;
 	    required int32 count = 2;
     }
-
-# Test Server
-http://raindays.net:8090
 
 # Unity BestHTTP websocket Client example
 
