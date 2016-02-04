@@ -1,7 +1,42 @@
+# Arachtecture
+Server
+- Vert.x 3.2.0
+- protobuf 2.6.1
+
+WebView
+- Protobuf.js
+- jQuery
+- bootstrap
+
+# Custom header
+It has 1 byte heading to figure out message type.
+    Message:1
+    JoinRoom:2
+    RoomList:3
+
+# proto idl
+    message Join {
+    	optional string roomId = 1;
+    }
+    
+    message Message {
+    	optional string message = 1;
+    	optional int32 level = 2;
+    }
+    
+    message RoomList {
+    	repeated RoomInfo rooms = 1;
+    }
+    
+    message RoomInfo {
+	    required string roomId = 1;
+	    required int32 count = 2;
+    }
+
 # Test Server
 http://raindays.net:8090
 
-# Unity BestHTTP websocket example
+# Unity BestHTTP websocket Client example
 
     using UnityEngine;
     using System.Collections;
