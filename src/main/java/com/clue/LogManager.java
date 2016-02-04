@@ -37,6 +37,7 @@ public class LogManager {
 
             ws.closeHandler(var -> {
                 logger.info("closed:" + ws.binaryHandlerID());
+                leaveRoom(user);
                 users.remove(User.getKey(ws));
             });
         }).requestHandler(req -> {
@@ -49,7 +50,7 @@ public class LogManager {
             }
             else if (req.uri().indexOf("/assets/") == 0) {
                 System.out.println(req.uri());
-                req.response().sendFile("webroot/" + req.uri());
+                req.response().sendFile("webroot" + req.uri());
             }
         });
     }
@@ -128,30 +129,36 @@ public class LogManager {
     void leaveRoom(User user) {
         String roomId = user.getRoomId();
         if (roomId.isEmpty() == true) {
-            logger.error("can leave room");
             return;
         }
 
         Room room = getRoom(roomId);
         if (room == null) {
-            logger.error("no room" + user.getRoomId());
             return;
         }
 
         room.removeMember(user);
-        if (room.getMembers().isEmpty() == true) {
-            rooms.remove(roomId);
+        if (roomId.equals(kLobbyRoomId)) {
             sendRoomList();
+        }
+        else {
+            if (room.getMembers().isEmpty() == true ) {
+                rooms.remove(roomId);
+                sendRoomList();
+            }
         }
     }
 
     void sendRoomList() {
         VL.RoomList.Builder builder = VL.RoomList.newBuilder();
         for (Room room : rooms.values()) {
-            builder.addRoomId(room.getKey());
+            VL.RoomInfo.Builder infoBuilder = VL.RoomInfo.newBuilder();
+            infoBuilder.setRoomId(room.getKey()).setCount(room.getMembers().size());
+            builder.addRooms(infoBuilder.build());
         }
         VL.RoomList roomList = builder.build();
         lobby.send(MsgType.RoomList, roomList);
+        logger.error("send roomlist");
     }
 
     void sendJoinLog(User user) {

@@ -9,5 +9,10 @@ message Message {
 }
 
 message RoomList {
-	repeated string roomId = 1;
+	repeated RoomInfo rooms = 1;
+}
+
+message RoomInfo {
+	required string roomId = 1;
+	required int32 count = 2;
 }

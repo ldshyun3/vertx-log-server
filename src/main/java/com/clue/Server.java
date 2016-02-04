@@ -13,6 +13,6 @@ public class Server extends AbstractVerticle {
     public void start() throws Exception {
         HttpServer server = vertx.createHttpServer();
         lynx.bind(server, "/vl");
-        server.listen(8080);
+        server.listen(8090);
     }
 }

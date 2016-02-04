@@ -23,7 +23,7 @@
   <script>
 
     // websocket
-    var socket = new WebSocket("ws://localhost:8080/vl");
+    var socket = new WebSocket("ws://raindays.net:8090/vl");
     socket.binaryType = "arraybuffer";
 
     function join() {
@@ -60,7 +60,7 @@
         console.log("on message");
         try {
           var buffer = new Uint8Array(evt.data);
-          if (buffer[0] != '1') {
+          if (buffer[0] != 1) {
             console.log(buffer[0]);
             return;
           }

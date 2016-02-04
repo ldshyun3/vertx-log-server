@@ -1043,23 +1043,28 @@ public final class VL {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated string roomId = 1;</code>
+     * <code>repeated .RoomInfo rooms = 1;</code>
      */
-    com.google.protobuf.ProtocolStringList
-        getRoomIdList();
+    java.util.List<VL.RoomInfo>
+        getRoomsList();
     /**
-     * <code>repeated string roomId = 1;</code>
+     * <code>repeated .RoomInfo rooms = 1;</code>
      */
-    int getRoomIdCount();
+    VL.RoomInfo getRooms(int index);
     /**
-     * <code>repeated string roomId = 1;</code>
+     * <code>repeated .RoomInfo rooms = 1;</code>
      */
-    java.lang.String getRoomId(int index);
+    int getRoomsCount();
     /**
-     * <code>repeated string roomId = 1;</code>
+     * <code>repeated .RoomInfo rooms = 1;</code>
      */
-    com.google.protobuf.ByteString
-        getRoomIdBytes(int index);
+    java.util.List<? extends VL.RoomInfoOrBuilder>
+        getRoomsOrBuilderList();
+    /**
+     * <code>repeated .RoomInfo rooms = 1;</code>
+     */
+    VL.RoomInfoOrBuilder getRoomsOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code RoomList}
@@ -1114,12 +1119,11 @@ public final class VL {
               break;
             }
             case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                roomId_ = new com.google.protobuf.LazyStringArrayList();
+                rooms_ = new java.util.ArrayList<VL.RoomInfo>();
                 mutable_bitField0_ |= 0x00000001;
               }
-              roomId_.add(bs);
+              rooms_.add(input.readMessage(VL.RoomInfo.PARSER, extensionRegistry));
               break;
             }
           }
@@ -1131,7 +1135,7 @@ public final class VL {
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          roomId_ = roomId_.getUnmodifiableView();
+          rooms_ = java.util.Collections.unmodifiableList(rooms_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -1164,37 +1168,43 @@ public final class VL {
       return PARSER;
     }
 
-    public static final int ROOMID_FIELD_NUMBER = 1;
-    private com.google.protobuf.LazyStringList roomId_;
+    public static final int ROOMS_FIELD_NUMBER = 1;
+    private java.util.List<VL.RoomInfo> rooms_;
     /**
-     * <code>repeated string roomId = 1;</code>
+     * <code>repeated .RoomInfo rooms = 1;</code>
      */
-    public com.google.protobuf.ProtocolStringList
-        getRoomIdList() {
-      return roomId_;
+    public java.util.List<VL.RoomInfo> getRoomsList() {
+      return rooms_;
     }
     /**
-     * <code>repeated string roomId = 1;</code>
+     * <code>repeated .RoomInfo rooms = 1;</code>
      */
-    public int getRoomIdCount() {
-      return roomId_.size();
+    public java.util.List<? extends VL.RoomInfoOrBuilder>
+        getRoomsOrBuilderList() {
+      return rooms_;
     }
     /**
-     * <code>repeated string roomId = 1;</code>
+     * <code>repeated .RoomInfo rooms = 1;</code>
      */
-    public java.lang.String getRoomId(int index) {
-      return roomId_.get(index);
+    public int getRoomsCount() {
+      return rooms_.size();
     }
     /**
-     * <code>repeated string roomId = 1;</code>
+     * <code>repeated .RoomInfo rooms = 1;</code>
      */
-    public com.google.protobuf.ByteString
-        getRoomIdBytes(int index) {
-      return roomId_.getByteString(index);
+    public VL.RoomInfo getRooms(int index) {
+      return rooms_.get(index);
+    }
+    /**
+     * <code>repeated .RoomInfo rooms = 1;</code>
+     */
+    public VL.RoomInfoOrBuilder getRoomsOrBuilder(
+        int index) {
+      return rooms_.get(index);
     }
 
     private void initFields() {
-      roomId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      rooms_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1202,6 +1212,12 @@ public final class VL {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
+      for (int i = 0; i < getRoomsCount(); i++) {
+        if (!getRooms(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -1209,8 +1225,8 @@ public final class VL {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      for (int i = 0; i < roomId_.size(); i++) {
-        output.writeBytes(1, roomId_.getByteString(i));
+      for (int i = 0; i < rooms_.size(); i++) {
+        output.writeMessage(1, rooms_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -1221,14 +1237,9 @@ public final class VL {
       if (size != -1) return size;
 
       size = 0;
-      {
-        int dataSize = 0;
-        for (int i = 0; i < roomId_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeBytesSizeNoTag(roomId_.getByteString(i));
-        }
-        size += dataSize;
-        size += 1 * getRoomIdList().size();
+      for (int i = 0; i < rooms_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, rooms_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1339,6 +1350,7 @@ public final class VL {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getRoomsFieldBuilder();
         }
       }
       private static Builder create() {
@@ -1347,8 +1359,12 @@ public final class VL {
 
       public Builder clear() {
         super.clear();
-        roomId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
+        if (roomsBuilder_ == null) {
+          rooms_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          roomsBuilder_.clear();
+        }
         return this;
       }
 
@@ -1376,11 +1392,15 @@ public final class VL {
       public VL.RoomList buildPartial() {
         VL.RoomList result = new VL.RoomList(this);
         int from_bitField0_ = bitField0_;
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          roomId_ = roomId_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000001);
+        if (roomsBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            rooms_ = java.util.Collections.unmodifiableList(rooms_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.rooms_ = rooms_;
+        } else {
+          result.rooms_ = roomsBuilder_.build();
         }
-        result.roomId_ = roomId_;
         onBuilt();
         return result;
       }
@@ -1396,21 +1416,43 @@ public final class VL {
 
       public Builder mergeFrom(VL.RoomList other) {
         if (other == VL.RoomList.getDefaultInstance()) return this;
-        if (!other.roomId_.isEmpty()) {
-          if (roomId_.isEmpty()) {
-            roomId_ = other.roomId_;
-            bitField0_ = (bitField0_ & ~0x00000001);
-          } else {
-            ensureRoomIdIsMutable();
-            roomId_.addAll(other.roomId_);
+        if (roomsBuilder_ == null) {
+          if (!other.rooms_.isEmpty()) {
+            if (rooms_.isEmpty()) {
+              rooms_ = other.rooms_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureRoomsIsMutable();
+              rooms_.addAll(other.rooms_);
+            }
+            onChanged();
           }
-          onChanged();
+        } else {
+          if (!other.rooms_.isEmpty()) {
+            if (roomsBuilder_.isEmpty()) {
+              roomsBuilder_.dispose();
+              roomsBuilder_ = null;
+              rooms_ = other.rooms_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              roomsBuilder_ =
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getRoomsFieldBuilder() : null;
+            } else {
+              roomsBuilder_.addAllMessages(other.rooms_);
+            }
+          }
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
+        for (int i = 0; i < getRoomsCount(); i++) {
+          if (!getRooms(i).isInitialized()) {
+
+            return false;
+          }
+        }
         return true;
       }
 
@@ -1433,97 +1475,244 @@ public final class VL {
       }
       private int bitField0_;
 
-      private com.google.protobuf.LazyStringList roomId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureRoomIdIsMutable() {
+      private java.util.List<VL.RoomInfo> rooms_ =
+        java.util.Collections.emptyList();
+      private void ensureRoomsIsMutable() {
         if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          roomId_ = new com.google.protobuf.LazyStringArrayList(roomId_);
+          rooms_ = new java.util.ArrayList<VL.RoomInfo>(rooms_);
           bitField0_ |= 0x00000001;
          }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          VL.RoomInfo, VL.RoomInfo.Builder, VL.RoomInfoOrBuilder> roomsBuilder_;
+
       /**
-       * <code>repeated string roomId = 1;</code>
+       * <code>repeated .RoomInfo rooms = 1;</code>
        */
-      public com.google.protobuf.ProtocolStringList
-          getRoomIdList() {
-        return roomId_.getUnmodifiableView();
+      public java.util.List<VL.RoomInfo> getRoomsList() {
+        if (roomsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(rooms_);
+        } else {
+          return roomsBuilder_.getMessageList();
+        }
       }
       /**
-       * <code>repeated string roomId = 1;</code>
+       * <code>repeated .RoomInfo rooms = 1;</code>
        */
-      public int getRoomIdCount() {
-        return roomId_.size();
+      public int getRoomsCount() {
+        if (roomsBuilder_ == null) {
+          return rooms_.size();
+        } else {
+          return roomsBuilder_.getCount();
+        }
       }
       /**
-       * <code>repeated string roomId = 1;</code>
+       * <code>repeated .RoomInfo rooms = 1;</code>
        */
-      public java.lang.String getRoomId(int index) {
-        return roomId_.get(index);
+      public VL.RoomInfo getRooms(int index) {
+        if (roomsBuilder_ == null) {
+          return rooms_.get(index);
+        } else {
+          return roomsBuilder_.getMessage(index);
+        }
       }
       /**
-       * <code>repeated string roomId = 1;</code>
+       * <code>repeated .RoomInfo rooms = 1;</code>
        */
-      public com.google.protobuf.ByteString
-          getRoomIdBytes(int index) {
-        return roomId_.getByteString(index);
-      }
-      /**
-       * <code>repeated string roomId = 1;</code>
-       */
-      public Builder setRoomId(
-          int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureRoomIdIsMutable();
-        roomId_.set(index, value);
-        onChanged();
+      public Builder setRooms(
+          int index, VL.RoomInfo value) {
+        if (roomsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureRoomsIsMutable();
+          rooms_.set(index, value);
+          onChanged();
+        } else {
+          roomsBuilder_.setMessage(index, value);
+        }
         return this;
       }
       /**
-       * <code>repeated string roomId = 1;</code>
+       * <code>repeated .RoomInfo rooms = 1;</code>
        */
-      public Builder addRoomId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureRoomIdIsMutable();
-        roomId_.add(value);
-        onChanged();
+      public Builder setRooms(
+          int index, VL.RoomInfo.Builder builderForValue) {
+        if (roomsBuilder_ == null) {
+          ensureRoomsIsMutable();
+          rooms_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          roomsBuilder_.setMessage(index, builderForValue.build());
+        }
         return this;
       }
       /**
-       * <code>repeated string roomId = 1;</code>
+       * <code>repeated .RoomInfo rooms = 1;</code>
        */
-      public Builder addAllRoomId(
-          java.lang.Iterable<java.lang.String> values) {
-        ensureRoomIdIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, roomId_);
-        onChanged();
+      public Builder addRooms(VL.RoomInfo value) {
+        if (roomsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureRoomsIsMutable();
+          rooms_.add(value);
+          onChanged();
+        } else {
+          roomsBuilder_.addMessage(value);
+        }
         return this;
       }
       /**
-       * <code>repeated string roomId = 1;</code>
+       * <code>repeated .RoomInfo rooms = 1;</code>
        */
-      public Builder clearRoomId() {
-        roomId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        onChanged();
+      public Builder addRooms(
+          int index, VL.RoomInfo value) {
+        if (roomsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureRoomsIsMutable();
+          rooms_.add(index, value);
+          onChanged();
+        } else {
+          roomsBuilder_.addMessage(index, value);
+        }
         return this;
       }
       /**
-       * <code>repeated string roomId = 1;</code>
+       * <code>repeated .RoomInfo rooms = 1;</code>
        */
-      public Builder addRoomIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureRoomIdIsMutable();
-        roomId_.add(value);
-        onChanged();
+      public Builder addRooms(
+          VL.RoomInfo.Builder builderForValue) {
+        if (roomsBuilder_ == null) {
+          ensureRoomsIsMutable();
+          rooms_.add(builderForValue.build());
+          onChanged();
+        } else {
+          roomsBuilder_.addMessage(builderForValue.build());
+        }
         return this;
+      }
+      /**
+       * <code>repeated .RoomInfo rooms = 1;</code>
+       */
+      public Builder addRooms(
+          int index, VL.RoomInfo.Builder builderForValue) {
+        if (roomsBuilder_ == null) {
+          ensureRoomsIsMutable();
+          rooms_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          roomsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .RoomInfo rooms = 1;</code>
+       */
+      public Builder addAllRooms(
+          java.lang.Iterable<? extends VL.RoomInfo> values) {
+        if (roomsBuilder_ == null) {
+          ensureRoomsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, rooms_);
+          onChanged();
+        } else {
+          roomsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .RoomInfo rooms = 1;</code>
+       */
+      public Builder clearRooms() {
+        if (roomsBuilder_ == null) {
+          rooms_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          roomsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .RoomInfo rooms = 1;</code>
+       */
+      public Builder removeRooms(int index) {
+        if (roomsBuilder_ == null) {
+          ensureRoomsIsMutable();
+          rooms_.remove(index);
+          onChanged();
+        } else {
+          roomsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .RoomInfo rooms = 1;</code>
+       */
+      public VL.RoomInfo.Builder getRoomsBuilder(
+          int index) {
+        return getRoomsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .RoomInfo rooms = 1;</code>
+       */
+      public VL.RoomInfoOrBuilder getRoomsOrBuilder(
+          int index) {
+        if (roomsBuilder_ == null) {
+          return rooms_.get(index);  } else {
+          return roomsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .RoomInfo rooms = 1;</code>
+       */
+      public java.util.List<? extends VL.RoomInfoOrBuilder>
+           getRoomsOrBuilderList() {
+        if (roomsBuilder_ != null) {
+          return roomsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(rooms_);
+        }
+      }
+      /**
+       * <code>repeated .RoomInfo rooms = 1;</code>
+       */
+      public VL.RoomInfo.Builder addRoomsBuilder() {
+        return getRoomsFieldBuilder().addBuilder(
+            VL.RoomInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .RoomInfo rooms = 1;</code>
+       */
+      public VL.RoomInfo.Builder addRoomsBuilder(
+          int index) {
+        return getRoomsFieldBuilder().addBuilder(
+            index, VL.RoomInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .RoomInfo rooms = 1;</code>
+       */
+      public java.util.List<VL.RoomInfo.Builder>
+           getRoomsBuilderList() {
+        return getRoomsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          VL.RoomInfo, VL.RoomInfo.Builder, VL.RoomInfoOrBuilder>
+          getRoomsFieldBuilder() {
+        if (roomsBuilder_ == null) {
+          roomsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              VL.RoomInfo, VL.RoomInfo.Builder, VL.RoomInfoOrBuilder>(
+                  rooms_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          rooms_ = null;
+        }
+        return roomsBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:RoomList)
@@ -1535,6 +1724,576 @@ public final class VL {
     }
 
     // @@protoc_insertion_point(class_scope:RoomList)
+  }
+
+  public interface RoomInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RoomInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string roomId = 1;</code>
+     */
+    boolean hasRoomId();
+    /**
+     * <code>required string roomId = 1;</code>
+     */
+    java.lang.String getRoomId();
+    /**
+     * <code>required string roomId = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getRoomIdBytes();
+
+    /**
+     * <code>required int32 count = 2;</code>
+     */
+    boolean hasCount();
+    /**
+     * <code>required int32 count = 2;</code>
+     */
+    int getCount();
+  }
+  /**
+   * Protobuf type {@code RoomInfo}
+   */
+  public static final class RoomInfo extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:RoomInfo)
+      RoomInfoOrBuilder {
+    // Use RoomInfo.newBuilder() to construct.
+    private RoomInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private RoomInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final RoomInfo defaultInstance;
+    public static RoomInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RoomInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RoomInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              roomId_ = bs;
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              count_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return VL.internal_static_RoomInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return VL.internal_static_RoomInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              VL.RoomInfo.class, VL.RoomInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<RoomInfo> PARSER =
+        new com.google.protobuf.AbstractParser<RoomInfo>() {
+      public RoomInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RoomInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RoomInfo> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ROOMID_FIELD_NUMBER = 1;
+    private java.lang.Object roomId_;
+    /**
+     * <code>required string roomId = 1;</code>
+     */
+    public boolean hasRoomId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string roomId = 1;</code>
+     */
+    public java.lang.String getRoomId() {
+      java.lang.Object ref = roomId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          roomId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string roomId = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getRoomIdBytes() {
+      java.lang.Object ref = roomId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b =
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        roomId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int COUNT_FIELD_NUMBER = 2;
+    private int count_;
+    /**
+     * <code>required int32 count = 2;</code>
+     */
+    public boolean hasCount() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required int32 count = 2;</code>
+     */
+    public int getCount() {
+      return count_;
+    }
+
+    private void initFields() {
+      roomId_ = "";
+      count_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasRoomId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCount()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getRoomIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(2, count_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getRoomIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, count_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static VL.RoomInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static VL.RoomInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static VL.RoomInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static VL.RoomInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static VL.RoomInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static VL.RoomInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static VL.RoomInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static VL.RoomInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static VL.RoomInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static VL.RoomInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(VL.RoomInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RoomInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RoomInfo)
+        VL.RoomInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return VL.internal_static_RoomInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return VL.internal_static_RoomInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                VL.RoomInfo.class, VL.RoomInfo.Builder.class);
+      }
+
+      // Construct using VL.RoomInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        roomId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        count_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return VL.internal_static_RoomInfo_descriptor;
+      }
+
+      public VL.RoomInfo getDefaultInstanceForType() {
+        return VL.RoomInfo.getDefaultInstance();
+      }
+
+      public VL.RoomInfo build() {
+        VL.RoomInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public VL.RoomInfo buildPartial() {
+        VL.RoomInfo result = new VL.RoomInfo(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.roomId_ = roomId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.count_ = count_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof VL.RoomInfo) {
+          return mergeFrom((VL.RoomInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(VL.RoomInfo other) {
+        if (other == VL.RoomInfo.getDefaultInstance()) return this;
+        if (other.hasRoomId()) {
+          bitField0_ |= 0x00000001;
+          roomId_ = other.roomId_;
+          onChanged();
+        }
+        if (other.hasCount()) {
+          setCount(other.getCount());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasRoomId()) {
+
+          return false;
+        }
+        if (!hasCount()) {
+
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        VL.RoomInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (VL.RoomInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object roomId_ = "";
+      /**
+       * <code>required string roomId = 1;</code>
+       */
+      public boolean hasRoomId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string roomId = 1;</code>
+       */
+      public java.lang.String getRoomId() {
+        java.lang.Object ref = roomId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            roomId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string roomId = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getRoomIdBytes() {
+        java.lang.Object ref = roomId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b =
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          roomId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string roomId = 1;</code>
+       */
+      public Builder setRoomId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        roomId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string roomId = 1;</code>
+       */
+      public Builder clearRoomId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        roomId_ = getDefaultInstance().getRoomId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string roomId = 1;</code>
+       */
+      public Builder setRoomIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        roomId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int count_ ;
+      /**
+       * <code>required int32 count = 2;</code>
+       */
+      public boolean hasCount() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int32 count = 2;</code>
+       */
+      public int getCount() {
+        return count_;
+      }
+      /**
+       * <code>required int32 count = 2;</code>
+       */
+      public Builder setCount(int value) {
+        bitField0_ |= 0x00000002;
+        count_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 count = 2;</code>
+       */
+      public Builder clearCount() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        count_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:RoomInfo)
+    }
+
+    static {
+      defaultInstance = new RoomInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:RoomInfo)
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
@@ -1552,6 +2311,11 @@ public final class VL {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RoomList_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_RoomInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RoomInfo_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -1562,8 +2326,9 @@ public final class VL {
   static {
     java.lang.String[] descriptorData = {
       "\n\010VL.proto\"\026\n\004Join\022\016\n\006roomId\030\001 \001(\t\")\n\007Me" +
-      "ssage\022\017\n\007message\030\001 \001(\t\022\r\n\005level\030\002 \001(\005\"\032\n" +
-      "\010RoomList\022\016\n\006roomId\030\001 \003(\t"
+      "ssage\022\017\n\007message\030\001 \001(\t\022\r\n\005level\030\002 \001(\005\"$\n" +
+      "\010RoomList\022\030\n\005rooms\030\001 \003(\0132\t.RoomInfo\")\n\010R" +
+      "oomInfo\022\016\n\006roomId\030\001 \002(\t\022\r\n\005count\030\002 \002(\005"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1594,7 +2359,13 @@ public final class VL {
     internal_static_RoomList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_RoomList_descriptor,
-        new java.lang.String[] { "RoomId", });
+        new java.lang.String[] { "Rooms", });
+    internal_static_RoomInfo_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_RoomInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_RoomInfo_descriptor,
+        new java.lang.String[] { "RoomId", "Count", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
