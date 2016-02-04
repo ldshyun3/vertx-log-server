@@ -3,7 +3,6 @@ Realtime log server for unity and web client
 # Test Server
 http://raindays.net:8090
 
-# Arachtecture
 Server
 - Vert.x 3.2.0
 - protobuf 2.6.1
