@@ -1,3 +1,5 @@
+Realtime log server for unity and web client
+
 # Test Server
 http://raindays.net:8090
 
