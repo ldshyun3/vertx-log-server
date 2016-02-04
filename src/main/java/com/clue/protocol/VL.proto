@@ -1,0 +1,13 @@
+
+message Join {
+	optional string roomId = 1;
+}
+
+message Message {
+	optional string message = 1;
+	optional int32 level = 2;
+}
+
+message RoomList {
+	repeated string roomId = 1;
+}
