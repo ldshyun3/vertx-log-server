@@ -14,6 +14,7 @@ WebView
 
 # Custom header
 It has 1 byte heading to figure out message type.
+
     Message:1
     JoinRoom:2
     RoomList:3
