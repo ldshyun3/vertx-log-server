@@ -2,8 +2,6 @@ package com.clue.service;
 
 import com.clue.model.Room;
 import com.clue.model.User;
-
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 
 /**
@@ -55,13 +53,13 @@ public class RoomServiceImpl implements RoomService {
         }
     }
 
-    public void boradcast(Room room, byte messageType, ByteBuffer buffer) {
+    public void boradcast(Room room, byte messageType, byte[] buffer) {
         for (User member : room.getMembers()) {
             Service.user.send(member, messageType, buffer);
         }
     }
 
-    public void boradcastWithout(Room room, User user, byte messageType, ByteBuffer buffer) {
+    public void boradcastWithout(Room room, User user, byte messageType, byte[] buffer) {
         for (User member : room.getMembers()) {
             if (user == member) {
                 continue;

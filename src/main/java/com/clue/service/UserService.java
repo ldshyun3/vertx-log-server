@@ -14,5 +14,5 @@ public interface UserService {
     void removeUser(User user);
     User getUser(String key);
     User getUser(ServerWebSocket ws);
-    void send(User user, byte messageType, ByteBuffer buffer);
+    void send(User user, byte messageType, byte[] buffer);
 }

@@ -32,27 +32,18 @@ function sendReqLogPing(socket) {
     data[0] = com.clue.fbs.RemoteLogger.MessageType.ReqLog;
     data.set(buf, 1);
     socket.send(data);
-
-
-    var buf2 = new flatbuffers.ByteBuffer(data);
-    var test = com.clue.fbs.RemoteLogger.ReqLog.getRootAsReqLog(buf2);
-    console.log(test.message());
-    console.log(JSON.stringify(builder.dataBuffer()));
-    console.log(JSON.stringify(buf2));
-
 }
 
 function parseNotiLog(data) {
     try {
-        var buffer = new Int8Array(data, 0, 1);
+        var buffer = new Uint8Array(data, 0, 1);
         if (buffer[0] != com.clue.fbs.RemoteLogger.MessageType.NotiLog) {
             console.log(buffer[0]);
             return null;
         }
 
-        var buf = new flatbuffers.ByteBuffer(new Uint8Array(data, 1, data.length));
+        var buf = new flatbuffers.ByteBuffer(new Uint8Array(data, 1, data.byteLength-1));
         var result = com.clue.fbs.RemoteLogger.NotiLog.getRootAsNotiLog(buf);
-        console.log(JSON.stringify(result));
         return result;
 
     } catch (err) {

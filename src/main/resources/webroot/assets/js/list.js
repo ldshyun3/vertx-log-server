@@ -22,15 +22,8 @@ function parseRoomList(data) {
             return null;
         }
 
-        console.log(data.byteLength);
         var buf = new flatbuffers.ByteBuffer(new Int8Array(data, 1, data.byteLength-1));
-        console.log(buf.capacity());
-
-        var result = com.clue.fbs.RemoteLogger.ResRoomList.getRootAsResRoomList(buf);
-        console.log(JSON.stringify(result));
-        console.log($result.roomsLength());
-
-        return result;
+        return com.clue.fbs.RemoteLogger.ResRoomList.getRootAsResRoomList(buf);
     } catch (err) {
         console.log(err);
     }

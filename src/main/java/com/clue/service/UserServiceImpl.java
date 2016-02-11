@@ -33,10 +33,10 @@ public class UserServiceImpl implements UserService {
         return getUser(ws.binaryHandlerID());
     }
 
-    public void send(User user, byte messageType, ByteBuffer buffer) {
+    public void send(User user, byte messageType, byte[] buffer) {
         Buffer data = Buffer.buffer();
         data.appendByte(messageType);
-        data.appendBytes(buffer.array());
+        data.appendBytes(buffer);
         user.getSocket().writeFinalBinaryFrame(data);
     }
 }

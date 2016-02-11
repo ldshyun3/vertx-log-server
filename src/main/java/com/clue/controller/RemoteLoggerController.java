@@ -62,7 +62,6 @@ public class RemoteLoggerController {
             Service.room.addRoom(room);
         }
         Service.room.joinRoom(room, user);
-        logger.error(reqJoin.roomId());
     }
 
     void processReqLog(User user, ByteBuffer buffer) {
@@ -73,8 +72,6 @@ public class RemoteLoggerController {
             return;
         }
 
-        logger.error(reqLog.message());
-
         FlatBufferBuilder builder = new FlatBufferBuilder(0);
         int messageOffset = builder.createString(reqLog.message());
 
@@ -83,9 +80,7 @@ public class RemoteLoggerController {
         NotiLog.addLevel(builder, reqLog.level());
         int packet = NotiLog.endNotiLog(builder);
         builder.finish(packet);
-
-        Service.room.boradcast(room, MessageType.NotiLog, builder.dataBuffer());
-//        Service.room.boradcastWithout(room, user, MessageType.NotiLog, builder.dataBuffer());
+        Service.room.boradcastWithout(room, user, MessageType.NotiLog, builder.sizedByteArray());
     }
 
     void processReqRoomList(User user, ByteBuffer buffer) {
@@ -110,26 +105,6 @@ public class RemoteLoggerController {
         ResRoomList.addRooms(builder, roomsVector);
         int packet = ResRoomList.endResRoomList(builder);
         builder.finish(packet);
-
-        ByteBuffer buf = builder.dataBuffer();
-
-        /*
-        logger.error(buf.array().length);
-        ResRoomList test = ResRoomList.getRootAsResRoomList(buf);
-        logger.error(test.roomsLength());
-        logger.error(test.rooms(0).roomId());
-        StringBuilder sb = new StringBuilder();
-        byte[] arr = buf.array();
-        for (Integer i = 0; i<arr.length; i++) {
-            sb.append("\"");
-            sb.append(i.toString());
-            sb.append("\":");
-            sb.append(arr[i]);
-            sb.append(",");
-        }
-        logger.error(sb.toString());
-        */
-
-        Service.user.send(user, MessageType.ResRoomList, buf);
+        Service.user.send(user, MessageType.ResRoomList, builder.sizedByteArray());
     }
 }
