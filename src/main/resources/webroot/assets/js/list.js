@@ -1,9 +1,7 @@
-var ProtoBuf = dcodeIO.ProtoBuf;
-var remoteLogger = ProtoBuf.loadProtoFile("./assets/idl/remoteLogger.proto");
-var ReqRoomList = remoteLogger.build("com.clue.proto.ReqRoomList");
-var ResRoomList = remoteLogger.build("com.clue.proto.ResRoomList");
 
 function sendReqRoomList(socket) {
+    var builder = new flatbuffers.Builder(1);
+
     var req = new ReqRoomList();
     req.pageCount = 100;
     var reqData = req.toArrayBuffer();
