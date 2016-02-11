@@ -8,7 +8,7 @@ Server
 - flatbuffers 1.3.0
 
 # Custom header
-It has 4 byte heading to figure out message type.
+It has 1 byte heading to figure out message type.
 
 # flatbuffers idl
     namespace com.clue.fbs.RemoteLogger;
