@@ -2,7 +2,8 @@ package com.clue.service;
 
 import com.clue.model.Room;
 import com.clue.model.User;
-import com.clue.proto.RemoteLogger;
+
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 
 /**
@@ -51,18 +52,18 @@ public class RoomServiceImpl implements RoomService {
         room.removeMember(user);
     }
 
-    public void boradcast(Room room, RemoteLogger.MessageType messageType, com.google.protobuf.GeneratedMessage msg) {
+    public void boradcast(Room room, byte messageType, ByteBuffer buffer) {
         for (User member : room.getMembers()) {
-            Service.user.send(member, messageType, msg);
+            Service.user.send(member, messageType, buffer);
         }
     }
 
-    public void boradcastWithout(Room room, User user, RemoteLogger.MessageType messageType, com.google.protobuf.GeneratedMessage msg) {
+    public void boradcastWithout(Room room, User user, byte messageType, ByteBuffer buffer) {
         for (User member : room.getMembers()) {
             if (user == member) {
                 continue;
             }
-            Service.user.send(member, messageType, msg);
+            Service.user.send(member, messageType, buffer);
         }
     }
 }

@@ -1,6 +1,6 @@
 // automatically generated, do not modify
 
-package RemoteLogger;
+package com.clue.fbs.RemoteLogger;
 
 import java.nio.*;
 import java.lang.*;

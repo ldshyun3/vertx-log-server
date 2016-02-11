@@ -1,6 +1,6 @@
 // automatically generated, do not modify
 
-package RemoteLogger;
+package com.clue.fbs.RemoteLogger;
 
 import java.nio.*;
 import java.lang.*;
@@ -13,8 +13,8 @@ public final class ResRoomList extends Table {
   public static ResRoomList getRootAsResRoomList(ByteBuffer _bb, ResRoomList obj) { _bb.order(ByteOrder.LITTLE_ENDIAN); return (obj.__init(_bb.getInt(_bb.position()) + _bb.position(), _bb)); }
   public ResRoomList __init(int _i, ByteBuffer _bb) { bb_pos = _i; bb = _bb; return this; }
 
-  public Room rooms(int j) { return rooms(new Room(), j); }
-  public Room rooms(Room obj, int j) { int o = __offset(4); return o != 0 ? obj.__init(__indirect(__vector(o) + j * 4), bb) : null; }
+  public RoomInfo rooms(int j) { return rooms(new RoomInfo(), j); }
+  public RoomInfo rooms(RoomInfo obj, int j) { int o = __offset(4); return o != 0 ? obj.__init(__indirect(__vector(o) + j * 4), bb) : null; }
   public int roomsLength() { int o = __offset(4); return o != 0 ? __vector_len(o) : 0; }
 
   public static int createResRoomList(FlatBufferBuilder builder,

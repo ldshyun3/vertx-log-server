@@ -2,13 +2,15 @@ package com.clue.controller;
 
 import com.clue.model.Room;
 import com.clue.model.User;
-import com.clue.proto.RemoteLogger;
 import com.clue.service.Service;
-import com.google.protobuf.InvalidProtocolBufferException;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import com.google.flatbuffers.FlatBufferBuilder;
+import com.clue.fbs.RemoteLogger.*;
+
+import java.nio.ByteBuffer;
 
 public class RemoteLoggerController {
     Logger logger = LoggerFactory.getLogger(getClass());
@@ -38,86 +40,70 @@ public class RemoteLoggerController {
     }
 
     void parse(User user, Buffer data) {
-        int head0 = data.getInt(0);
-        RemoteLogger.MessageType messageType = RemoteLogger.MessageType.valueOf(head0);
+        byte messageType = data.getByte(0);
 
         if (user == null) {
             logger.error("no user!");
             return;
         }
 
+
+        ByteBuffer buffer = ByteBuffer.wrap(data.getBytes(1, data.length()));
         switch (messageType) {
-            case MsgReqJoin: processReqJoin(user, data.getBytes(4, data.length())); break;
-            case MsgReqLog: processReqLog(user, data.getBytes(4, data.length())); break;
-            case MsgReqRoomList: processReqRoomList(user, data.getBytes(4, data.length())); break;
+            case MessageType.ReqJoin: processReqJoin(user, buffer); break;
+            case MessageType.ReqLog: processReqLog(user, buffer); break;
+            case MessageType.ReqRoomList: processReqRoomList(user, buffer); break;
         }
     }
 
-    void processReqJoin(User user, byte[] data) {
-        RemoteLogger.ReqJoin reqJoin = null;
-        try {
-            reqJoin = RemoteLogger.ReqJoin.parseFrom(data);
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        // update user info
-        Room room = Service.room.getRoom(reqJoin.getRoomId());
+    void processReqJoin(User user, ByteBuffer buffer) {
+        ReqJoin reqJoin = ReqJoin.getRootAsReqJoin(buffer);
+        Room room = Service.room.getRoom(reqJoin.roomId());
         if (room == null) {
-            room = new Room(reqJoin.getRoomId());
+            room = new Room(reqJoin.roomId());
             Service.room.addRoom(room);
         }
         Service.room.joinRoom(room, user);
     }
 
-    void processReqLog(User user, byte[] data) {
-        RemoteLogger.ReqLog reqSync = null;
-        try {
-            reqSync = RemoteLogger.ReqLog.parseFrom(data);
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
-            return;
-        }
-
+    void processReqLog(User user, ByteBuffer buffer) {
+        ReqLog reqLog = ReqLog.getRootAsReqLog(buffer);
         Room room = Service.room.getRoom(user.getRoomId());
         if (room == null) {
             logger.error("no room exist!");
             return;
         }
 
-        RemoteLogger.NotiLog.Builder notiSyncBuilder = RemoteLogger.NotiLog.newBuilder();
-        notiSyncBuilder.setMessage(reqSync.getMessage());
-        notiSyncBuilder.setLevel(reqSync.getLevel());
-        Service.room.boradcastWithout(room, user, RemoteLogger.MessageType.MsgNotiLog, notiSyncBuilder.build());
+        FlatBufferBuilder builder = new FlatBufferBuilder(0);
+        NotiLog.startNotiLog(builder);
+        NotiLog.addMessage(builder, builder.createString(reqLog.message()));
+        NotiLog.addLevel(builder, reqLog.level());
+        int packet = NotiLog.endNotiLog(builder);
+        builder.finish(packet);
+
+        Service.room.boradcastWithout(room, user, MessageType.NotiLog, builder.dataBuffer());
     }
 
-    void processReqRoomList(User user, byte[] data) {
-        RemoteLogger.ReqRoomList reqRoomList = null;
-        try {
-            reqRoomList = RemoteLogger.ReqRoomList.parseFrom(data);
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
-            return;
-        }
+    void processReqRoomList(User user, ByteBuffer buffer) {
+        ReqRoomList reqRoomList = ReqRoomList.getRootAsReqRoomList(buffer);
 
-        RemoteLogger.ResRoomList.Builder resRoomListBuilder = RemoteLogger.ResRoomList.newBuilder();
+        FlatBufferBuilder builder = new FlatBufferBuilder(0);
+        int pageCount = Math.min(Service.room.getRooms().values().size(), reqRoomList.pageCount());
+        int[] rooms = new int[pageCount];
         int index = 0;
-        for(Room room : Service.room.getRooms().values()) {
-            resRoomListBuilder.addRooms(index, toRoom(room));
-            index++;
-            if (reqRoomList.getPageCount() == index) {
+        for (Room room : Service.room.getRooms().values()) {
+            int roomIdOffset = builder.createString(room.getKey());
+            rooms[index++] = RoomInfo.createRoomInfo(builder, roomIdOffset, room.getMemberCount());
+            if (index == pageCount) {
                 break;
             }
         }
 
-        Service.user.send(user, RemoteLogger.MessageType.MsgResRoomList, resRoomListBuilder.build());
-    }
+        ResRoomList.startResRoomList(builder);
+        ResRoomList.addRooms(builder, ResRoomList.createRoomsVector(builder, rooms));
+        int packet = ResRoomList.endResRoomList(builder);
+        builder.finish(packet);
 
-    RemoteLogger.Room toRoom(Room room) {
-        RemoteLogger.Room.Builder builder = RemoteLogger.Room.newBuilder();
-        builder.setCount(room.getMembers().size());
-        builder.setRoomId(room.getKey());
-        return builder.build();
+        Service.user.send(user, MessageType.ResRoomList, builder.dataBuffer());
     }
 }

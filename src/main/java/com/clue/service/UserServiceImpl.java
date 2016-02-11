@@ -1,10 +1,10 @@
 package com.clue.service;
 
 import com.clue.model.User;
-import com.clue.proto.RemoteLogger;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 
 /**
@@ -33,17 +33,10 @@ public class UserServiceImpl implements UserService {
         return getUser(ws.binaryHandlerID());
     }
 
-    public void send(User user, RemoteLogger.MessageType messageType, com.google.protobuf.GeneratedMessage msg) {
+    public void send(User user, byte messageType, ByteBuffer buffer) {
         Buffer data = Buffer.buffer();
-        data.appendInt(messageType.getNumber());
-        data.appendBytes(msg.toByteArray());
-        user.getSocket().writeFinalBinaryFrame(data);
-    }
-
-    public void send(User user, RemoteLogger.MessageType messageType, byte[] msg) {
-        Buffer data = Buffer.buffer();
-        data.appendInt(messageType.getNumber());
-        data.appendBytes(msg);
+        data.appendByte(messageType);
+        data.appendBytes(buffer.array());
         user.getSocket().writeFinalBinaryFrame(data);
     }
 }
