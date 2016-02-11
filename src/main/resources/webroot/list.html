@@ -1,17 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="./assets/js/long.min.js"></script>
-  <script src="./assets/js/bytebuffer.min.js"></script>
+  <script src="./assets/js/thirdparty/long.min.js"></script>
+  <script src="./assets/js/thirdparty/bytebuffer.min.js"></script>
+  <script src="./assets/js/thirdparty/jquery.min.js"></script>
   <script src="./assets/js/proto/protobuf.min.js"></script>
-  <script src="./assets/js/jquery.min.js"></script>
   <script src="./assets/bootstrap/js/bootstrap.min.js"></script>
-  <script>
-    var ProtoBuf = dcodeIO.ProtoBuf;
-    var Join = ProtoBuf.loadProtoFile("./assets/idl/VL.proto").build("Join");
-    var RoomList = ProtoBuf.loadProtoFile("./assets/idl/VL.proto").build("RoomList");
-    var RoomInfo = ProtoBuf.loadProtoFile("./assets/idl/VL.proto").build("RoomInfo");
-  </script>
   <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap-theme.min.css">
   <style>
@@ -20,51 +14,6 @@
 </head>
 <body>
   <ul id="messages" class="list-group"></ul>
-
-  <script>
-    var socket = new WebSocket("ws://raindays.net:8090/vl");
-    socket.binaryType = "arraybuffer";
-
-
-    function joinLobby() {
-      var join = new Join("lobby");
-      var joinData = join.toArrayBuffer();
-
-      var data = new Uint8Array(joinData.byteLength + 1);
-      data[0] = 2;
-      data.set(new Uint8Array(joinData), 1);
-      socket.send(data);
-    }
-
-    socket.onopen = function() {
-      console.log("onopen");
-      joinLobby();
-    };
-
-    socket.onclose = function() {
-    };
-
-    socket.onmessage = function(evt) {
-        console.log("on message");
-        try {
-          var buffer = new Uint8Array(evt.data);
-          if (buffer[0] != 3) {
-              console.log(buffer[0]);
-              return;
-          }
-
-          var roomList = RoomList.decode(evt.data.slice(1));
-
-          $('#messages').empty();
-          for (i=0; i<roomList.rooms.length; i++) {
-            var room = roomList.rooms[i];
-            $('#messages').append($('<li class="list-group-item">').html("<a href='../log/"+room.roomId+"'>"+room.roomId+"</a> <span class=\"badge\">" + room.count + "</span>"));
-          }
-        } catch (err) {
-
-        }
-    };
-
-  </script>
+  <script src="./assets/js/list.js"></script>
 </body>
 </html>

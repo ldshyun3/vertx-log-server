@@ -1,11 +1,11 @@
-package com.clue;
+package com.clue.model;
 
 import java.util.HashSet;
 
 public class Room {
+    int lastUserNo = 0;
     String key = "";
     HashSet<User> members = new HashSet<User>();
-    int lastNo = 0;
 
     public Room(String key) {
         this.key = key;
@@ -19,27 +19,18 @@ public class Room {
         return members;
     }
 
-    public void send(MsgType messageType, com.google.protobuf.GeneratedMessage msg) {
-        for (User user : members) {
-            user.send(messageType, msg);
-        }
-    }
-
-    public void send(MsgType messageType, byte[] msg) {
-        for (User user : members) {
-            user.send(messageType, msg);
-        }
-    }
-
     public void addMember(User user) {
         user.setRoomId(key);
         members.add(user);
-        user.setNo(lastNo);
-        lastNo++;
+        lastUserNo++;
     }
 
     public void removeMember(User user) {
         members.remove(user);
         user.setRoomId("");
+    }
+
+    public int getMemberCount() {
+        return members.size();
     }
 }

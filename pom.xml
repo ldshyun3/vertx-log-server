@@ -10,7 +10,7 @@
 
     <properties>
         <!-- the main verticle class name -->
-        <main.verticle>com.clue.LogVerticle</main.verticle>
+        <main.verticle>com.clue.controller.RemoteLoggerVerticle</main.verticle>
         <vertx.version>3.2.0</vertx.version>
     </properties>
 
@@ -87,7 +87,7 @@
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>LogLauncher</Main-Class>
+                                        <Main-Class>RemoteLoggerLauncher</Main-Class>
                                         <Main-Verticle>${main.verticle}</Main-Verticle>
                                     </manifestEntries>
                                 </transformer>
