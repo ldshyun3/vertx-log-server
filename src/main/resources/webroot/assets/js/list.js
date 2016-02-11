@@ -1,6 +1,7 @@
 var ProtoBuf = dcodeIO.ProtoBuf;
-var ReqRoomList = ProtoBuf.loadProtoFile("./assets/idl/remoteLogger.proto").build("com.clue.proto.ReqRoomList");
-var ResRoomList = ProtoBuf.loadProtoFile("./assets/idl/remoteLogger.proto").build("com.clue.proto.ResRoomList");
+var remoteLogger = ProtoBuf.loadProtoFile("./assets/idl/remoteLogger.proto");
+var ReqRoomList = remoteLogger.build("com.clue.proto.ReqRoomList");
+var ResRoomList = remoteLogger.build("com.clue.proto.ResRoomList");
 
 function sendReqRoomList(socket) {
     var req = new ReqRoomList();

@@ -10,7 +10,6 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
-
 public class RemoteLoggerController {
     Logger logger = LoggerFactory.getLogger(getClass());
 

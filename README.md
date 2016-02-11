@@ -13,30 +13,52 @@ WebView
 - bootstrap
 
 # Custom header
-It has 1 byte heading to figure out message type.
-
-    Message:1
-    JoinRoom:2
-    RoomList:3
+It has 4 byte heading to figure out message type.
 
 # proto idl
-    message Join {
-    	optional string roomId = 1;
+    package com.clue.proto;
+
+    // enumerator
+    //-----------------------------------------------------------------------------
+    enum MessageType {
+        MsgReqJoin = 0;
+        MsgReqLog = 1;
+        MsgNotiLog = 2;
+        MsgReqRoomList = 3;
+        MsgResRoomList = 4;
     }
-    
-    message Message {
-    	optional string message = 1;
-    	optional int32 level = 2;
+
+    // request, response, notification
+    //-----------------------------------------------------------------------------
+    message ReqJoin {
+        required string roomId = 1;
     }
-    
-    message RoomList {
-    	repeated RoomInfo rooms = 1;
+
+    message ReqLog {
+        required string message = 1;
+        required int32 level = 2;
     }
-    
-    message RoomInfo {
-	    required string roomId = 1;
-	    required int32 count = 2;
+
+    message NotiLog {
+        required string message = 1;
+        required int32 level = 2;
     }
+
+    message ReqRoomList {
+        required int32 pageCount = 1;
+    }
+
+    message ResRoomList {
+        repeated Room rooms = 1;
+    }
+
+    // model class
+    //-----------------------------------------------------------------------------
+    message Room {
+        required string roomId = 1;
+        required int32 count = 2;
+    }
+
 
 # Unity BestHTTP websocket Client example
 
