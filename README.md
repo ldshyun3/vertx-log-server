@@ -68,7 +68,7 @@ It has 4 byte heading to figure out message type.
     using BestHTTP;
     using BestHTTP.WebSocket;
     using BestHTTP.WebSocket.Frames;
-    using ProtoFiles.RemoteLogger;
+    using com.clue.proto;
 
     public class MainScene : MonoBehaviour {
         WebSocket socket = null;
