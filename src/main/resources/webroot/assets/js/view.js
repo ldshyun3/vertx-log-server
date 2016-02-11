@@ -18,8 +18,6 @@ function sendReqJoin(socket) {
 
 function sendReqLogPing(socket) {
     var builder = new flatbuffers.Builder(0);
-    console.log(getRoomId());
-
     var messageOffset = builder.createString("ping");
     com.clue.fbs.RemoteLogger.ReqLog.startReqLog(builder);
     com.clue.fbs.RemoteLogger.ReqLog.addMessage(builder, messageOffset);
@@ -68,7 +66,7 @@ function getRoomId() {
 
 
 function main() {
-    var socket = new WebSocket("ws://localhost:8090/remoteLogger");
+    var socket = new WebSocket("ws://" + location.hostname + ":8090/remoteLogger");
     socket.binaryType = "arraybuffer";
 
     socket.onopen = function() {
