@@ -50,6 +50,9 @@ public class RoomServiceImpl implements RoomService {
             return;
         }
         room.removeMember(user);
+        if (room.getMemberCount() == 0) {
+            removeRoom(room);
+        }
     }
 
     public void boradcast(Room room, byte messageType, ByteBuffer buffer) {

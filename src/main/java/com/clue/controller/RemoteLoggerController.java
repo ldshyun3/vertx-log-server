@@ -41,12 +41,10 @@ public class RemoteLoggerController {
 
     void parse(User user, Buffer data) {
         byte messageType = data.getByte(0);
-
         if (user == null) {
             logger.error("no user!");
             return;
         }
-
 
         ByteBuffer buffer = ByteBuffer.wrap(data.getBytes(1, data.length()));
         switch (messageType) {
@@ -64,6 +62,7 @@ public class RemoteLoggerController {
             Service.room.addRoom(room);
         }
         Service.room.joinRoom(room, user);
+        logger.error(reqJoin.roomId());
     }
 
     void processReqLog(User user, ByteBuffer buffer) {
@@ -74,14 +73,19 @@ public class RemoteLoggerController {
             return;
         }
 
+        logger.error(reqLog.message());
+
         FlatBufferBuilder builder = new FlatBufferBuilder(0);
+        int messageOffset = builder.createString(reqLog.message());
+
         NotiLog.startNotiLog(builder);
-        NotiLog.addMessage(builder, builder.createString(reqLog.message()));
+        NotiLog.addMessage(builder, messageOffset);
         NotiLog.addLevel(builder, reqLog.level());
         int packet = NotiLog.endNotiLog(builder);
         builder.finish(packet);
 
-        Service.room.boradcastWithout(room, user, MessageType.NotiLog, builder.dataBuffer());
+        Service.room.boradcast(room, MessageType.NotiLog, builder.dataBuffer());
+//        Service.room.boradcastWithout(room, user, MessageType.NotiLog, builder.dataBuffer());
     }
 
     void processReqRoomList(User user, ByteBuffer buffer) {
@@ -93,17 +97,39 @@ public class RemoteLoggerController {
         int index = 0;
         for (Room room : Service.room.getRooms().values()) {
             int roomIdOffset = builder.createString(room.getKey());
-            rooms[index++] = RoomInfo.createRoomInfo(builder, roomIdOffset, room.getMemberCount());
+            rooms[index] = RoomInfo.createRoomInfo(builder, roomIdOffset, room.getMemberCount());
+            index++;
             if (index == pageCount) {
                 break;
             }
         }
 
+        int roomsVector = ResRoomList.createRoomsVector(builder, rooms);
+
         ResRoomList.startResRoomList(builder);
-        ResRoomList.addRooms(builder, ResRoomList.createRoomsVector(builder, rooms));
+        ResRoomList.addRooms(builder, roomsVector);
         int packet = ResRoomList.endResRoomList(builder);
         builder.finish(packet);
 
-        Service.user.send(user, MessageType.ResRoomList, builder.dataBuffer());
+        ByteBuffer buf = builder.dataBuffer();
+
+        /*
+        logger.error(buf.array().length);
+        ResRoomList test = ResRoomList.getRootAsResRoomList(buf);
+        logger.error(test.roomsLength());
+        logger.error(test.rooms(0).roomId());
+        StringBuilder sb = new StringBuilder();
+        byte[] arr = buf.array();
+        for (Integer i = 0; i<arr.length; i++) {
+            sb.append("\"");
+            sb.append(i.toString());
+            sb.append("\":");
+            sb.append(arr[i]);
+            sb.append(",");
+        }
+        logger.error(sb.toString());
+        */
+
+        Service.user.send(user, MessageType.ResRoomList, buf);
     }
 }

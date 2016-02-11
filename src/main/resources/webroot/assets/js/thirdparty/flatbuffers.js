@@ -1,7 +1,3 @@
-/// @file
-/// @addtogroup flatbuffers_javascript_api
-/// @{
-/// @cond FLATBUFFERS_INTERNAL
 var flatbuffers = {};
 
 /**
@@ -109,11 +105,9 @@ flatbuffers.Long.prototype.equals = function(other) {
  */
 flatbuffers.Long.ZERO = new flatbuffers.Long(0, 0);
 
-/// @endcond
 ////////////////////////////////////////////////////////////////////////////////
+
 /**
- * Create a FlatBufferBuilder.
- *
  * @constructor
  * @param {number=} initial_size
  */
@@ -234,7 +228,6 @@ flatbuffers.Builder.prototype.asUint8Array = function() {
   return this.bb.bytes().subarray(this.bb.position(), this.bb.position() + this.offset());
 };
 
-/// @cond FLATBUFFERS_INTERNAL
 /**
  * Prepare to write an element of `size` after `additional_bytes` have been
  * written, e.g. if you write a string, you need to align such the int length
@@ -314,11 +307,9 @@ flatbuffers.Builder.prototype.writeFloat32 = function(value) {
 flatbuffers.Builder.prototype.writeFloat64 = function(value) {
   this.bb.writeFloat64(this.space -= 8, value);
 };
-/// @endcond
 
 /**
- * Add an `int8` to the buffer, properly aligned, and grows the buffer (if necessary).
- * @param {number} value The `int8` to add the the buffer.
+ * @param {number} value
  */
 flatbuffers.Builder.prototype.addInt8 = function(value) {
   this.prep(1, 0);
@@ -326,8 +317,7 @@ flatbuffers.Builder.prototype.addInt8 = function(value) {
 };
 
 /**
- * Add an `int16` to the buffer, properly aligned, and grows the buffer (if necessary).
- * @param {number} value The `int16` to add the the buffer.
+ * @param {number} value
  */
 flatbuffers.Builder.prototype.addInt16 = function(value) {
   this.prep(2, 0);
@@ -335,8 +325,7 @@ flatbuffers.Builder.prototype.addInt16 = function(value) {
 };
 
 /**
- * Add an `int32` to the buffer, properly aligned, and grows the buffer (if necessary).
- * @param {number} value The `int32` to add the the buffer.
+ * @param {number} value
  */
 flatbuffers.Builder.prototype.addInt32 = function(value) {
   this.prep(4, 0);
@@ -344,8 +333,7 @@ flatbuffers.Builder.prototype.addInt32 = function(value) {
 };
 
 /**
- * Add an `int64` to the buffer, properly aligned, and grows the buffer (if necessary).
- * @param {flatbuffers.Long} value The `int64` to add the the buffer.
+ * @param {flatbuffers.Long} value
  */
 flatbuffers.Builder.prototype.addInt64 = function(value) {
   this.prep(8, 0);
@@ -353,8 +341,7 @@ flatbuffers.Builder.prototype.addInt64 = function(value) {
 };
 
 /**
- * Add a `float32` to the buffer, properly aligned, and grows the buffer (if necessary).
- * @param {number} value The `float32` to add the the buffer.
+ * @param {number} value
  */
 flatbuffers.Builder.prototype.addFloat32 = function(value) {
   this.prep(4, 0);
@@ -362,15 +349,13 @@ flatbuffers.Builder.prototype.addFloat32 = function(value) {
 };
 
 /**
- * Add a `float64` to the buffer, properly aligned, and grows the buffer (if necessary).
- * @param {number} value The `float64` to add the the buffer.
+ * @param {number} value
  */
 flatbuffers.Builder.prototype.addFloat64 = function(value) {
   this.prep(8, 0);
   this.writeFloat64(value);
 };
 
-/// @cond FLATBUFFERS_INTERNAL
 /**
  * @param {number} voffset
  * @param {number} value
@@ -530,19 +515,17 @@ flatbuffers.Builder.growByteBuffer = function(bb) {
   nbb.bytes().set(bb.bytes(), new_buf_size - old_buf_size);
   return nbb;
 };
-/// @endcond
 
 /**
  * Adds on offset, relative to where it will be written.
  *
- * @param {flatbuffers.Offset} offset The offset to add.
+ * @param {flatbuffers.Offset} offset The offset to add
  */
 flatbuffers.Builder.prototype.addOffset = function(offset) {
   this.prep(flatbuffers.SIZEOF_INT, 0); // Ensure alignment is already done.
   this.writeInt32(this.offset() - offset + flatbuffers.SIZEOF_INT);
 };
 
-/// @cond FLATBUFFERS_INTERNAL
 /**
  * Start encoding a new object in the buffer.  Users will not usually need to
  * call this directly. The FlatBuffers compiler will generate helper methods
@@ -623,11 +606,8 @@ outer_loop:
   this.isNested = false;
   return vtableloc;
 };
-/// @endcond
 
 /**
- * Finalize a buffer, poiting to the given `root_table`.
- *
  * @param {flatbuffers.Offset} root_table
  * @param {string=} file_identifier
  */
@@ -648,7 +628,6 @@ flatbuffers.Builder.prototype.finish = function(root_table, file_identifier) {
   this.bb.setPosition(this.space);
 };
 
-/// @cond FLATBUFFERS_INTERNAL
 /**
  * This checks a required field has been set in a given table that has
  * just been constructed.
@@ -694,7 +673,6 @@ flatbuffers.Builder.prototype.endVector = function() {
   this.writeInt32(this.vector_num_elems);
   return this.offset();
 };
-/// @endcond
 
 /**
  * Encode the string `s` in the buffer using UTF-8. If a Uint8Array is passed
@@ -751,11 +729,10 @@ flatbuffers.Builder.prototype.createString = function(s) {
   }
   return this.endVector();
 };
+
 ////////////////////////////////////////////////////////////////////////////////
-/// @cond FLATBUFFERS_INTERNAL
+
 /**
- * Create a new ByteBuffer with a given array of bytes (`Uint8Array`).
- *
  * @constructor
  * @param {Uint8Array} bytes
  */
@@ -774,8 +751,6 @@ flatbuffers.ByteBuffer = function(bytes) {
 };
 
 /**
- * Create and allocate a new ByteBuffer with a given size.
- *
  * @param {number} byte_size
  * @returns {flatbuffers.ByteBuffer}
  */
@@ -784,8 +759,6 @@ flatbuffers.ByteBuffer.allocate = function(byte_size) {
 };
 
 /**
- * Get the underlying `Uint8Array`.
- *
  * @returns {Uint8Array}
  */
 flatbuffers.ByteBuffer.prototype.bytes = function() {
@@ -793,8 +766,6 @@ flatbuffers.ByteBuffer.prototype.bytes = function() {
 };
 
 /**
- * Get the buffer's position.
- *
  * @returns {number}
  */
 flatbuffers.ByteBuffer.prototype.position = function() {
@@ -802,8 +773,6 @@ flatbuffers.ByteBuffer.prototype.position = function() {
 };
 
 /**
- * Set the buffer's position.
- *
  * @param {number} position
  */
 flatbuffers.ByteBuffer.prototype.setPosition = function(position) {
@@ -811,8 +780,6 @@ flatbuffers.ByteBuffer.prototype.setPosition = function(position) {
 };
 
 /**
- * Get the buffer's capacity.
- *
  * @returns {number}
  */
 flatbuffers.ByteBuffer.prototype.capacity = function() {
@@ -1103,6 +1070,3 @@ flatbuffers.ByteBuffer.prototype.__has_identifier = function(ident) {
 
 // Exports for Node.js and RequireJS
 this.flatbuffers = flatbuffers;
-
-/// @endcond
-/// @}
