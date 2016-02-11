@@ -76,7 +76,7 @@ It has 4 byte heading to figure out message type.
         ProtoLibSerializer serializer = new ProtoLibSerializer();
 
         IEnumerator Start() {
-            Connect("ws://raindays.net:8090/vl");
+            Connect("ws://server.to.connect:8090/remoteLogger");
             
             int count = 1;
             while (true) {
