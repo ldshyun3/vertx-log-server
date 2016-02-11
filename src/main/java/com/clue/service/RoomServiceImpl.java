@@ -38,7 +38,7 @@ public class RoomServiceImpl implements RoomService {
 
     public Boolean joinRoom(Room room, User user) {
         if (room == null) {
-            return;
+            return false;
         }
         room.addMember(user);
         return true;
