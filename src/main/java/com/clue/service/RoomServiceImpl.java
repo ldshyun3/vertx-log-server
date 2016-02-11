@@ -37,11 +37,17 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public Boolean joinRoom(Room room, User user) {
+        if (room == null) {
+            return;
+        }
         room.addMember(user);
         return true;
     }
 
     public void leaveRoom(Room room, User user) {
+        if (room == null) {
+            return;
+        }
         room.removeMember(user);
     }
 
