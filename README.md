@@ -68,7 +68,7 @@ It has 4 byte heading to figure out message type.
     using BestHTTP;
     using BestHTTP.WebSocket;
     using BestHTTP.WebSocket.Frames;
-    using ProtoFiles.VL;
+    using ProtoFiles.RemoteLogger;
 
     public class MainScene : MonoBehaviour {
         WebSocket socket = null;
@@ -85,7 +85,7 @@ It has 4 byte heading to figure out message type.
                     Message message = new Message();
                     message.message = "message from unity " + count.ToString();
                     message.level = UnityEngine.Random.Range(0, 7);
-                    Send(1, message);
+                    Send(MessageType.MsgReqLog, message);
                     count++;
                 }
             }
@@ -103,12 +103,6 @@ It has 4 byte heading to figure out message type.
             socket.OnClosed += WSocketOnClosed;
             socket.OnErrorDesc += WSocketOnError;
             socket.Open();
-        }
-
-        public void Send(string text) {
-            if (socket != null && socket.IsOpen) {
-                socket.Send(text);
-            }
         }
 
         public void Stop() {
@@ -133,7 +127,7 @@ It has 4 byte heading to figure out message type.
 
             Join join = new Join();
             join.roomId = "logTestRoom" + UnityEngine.Random.Range(0, 1000);
-            Send(2, join);
+            Send(MessageType.MsgReqJoin, join);
             connected = true;
         }
         
@@ -176,18 +170,19 @@ It has 4 byte heading to figure out message type.
             }
             return null;
         }
-        
-        byte[] Serialize(byte type, ProtoBuf.IExtensible msg) {
+
+        byte[] Serialize(MessageType type, ProtoBuf.IExtensible msg) {
             byte[] data = Serialize(msg);
-            byte[] rv = new byte[1 + data.Length];
-            rv[0] = type;
-            System.Buffer.BlockCopy(data, 0, rv, 1, data.Length);
-            return rv;
+            byte[] result = new byte[4 + data.Length];
+            byte[] typeBytes = BitConverter.GetBytes((int)type);
+            System.Buffer.BlockCopy(data, 0, typeBytes, 0, typeBytes.Length);
+            System.Buffer.BlockCopy(data, 0, result, 4, data.Length);
+            return result;
         }
-        
-        void Send(byte type, ProtoBuf.IExtensible msg){
+
+        void Send(MessageType type, ProtoBuf.IExtensible msg){
             byte [] data = Serialize(type, msg);
-            WebSocketBinaryFrame frame = new WebSocketBinaryFrame(data, true);  
+            WebSocketBinaryFrame frame = new WebSocketBinaryFrame(data, true);
             socket.Send(frame);
         }
     }
