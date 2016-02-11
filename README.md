@@ -15,8 +15,8 @@ WebView
 # Custom header
 It has 4 byte heading to figure out message type.
 
-# proto idl
-    package com.clue.proto;
+# idl idl
+    package com.clue.idl;
 
     // enumerator
     //-----------------------------------------------------------------------------
@@ -68,7 +68,7 @@ It has 4 byte heading to figure out message type.
     using BestHTTP;
     using BestHTTP.WebSocket;
     using BestHTTP.WebSocket.Frames;
-    using com.clue.proto;
+    using com.clue.idl;
 
     public class MainScene : MonoBehaviour {
         WebSocket socket = null;

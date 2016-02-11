@@ -29,7 +29,7 @@ function parseRoomList(data) {
 }
 
 function main() {
-    var socket = new WebSocket("ws://localhost:8090/remoteLogger");
+    var socket = new WebSocket("ws://raindays.net:8090/remoteLogger");
     socket.binaryType = "arraybuffer";
 
     socket.onopen = function() {

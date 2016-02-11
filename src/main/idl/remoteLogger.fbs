@@ -1,0 +1,42 @@
+namespace RemoteLogger;
+
+// enum
+//-----------------------------------------------------------------------------
+enum MessageType : byte {
+    ReqJoin = 0,
+    ReqLog,
+    NotiLog,
+    ReqRoomList,
+    ResRoomList
+}
+
+// tables
+//-----------------------------------------------------------------------------
+table ReqJoin {
+	roomId:string;
+}
+
+table ReqLog {
+	message:string;
+	level:byte;
+}
+
+table NotiLog {
+	message:string;
+	level:byte;
+}
+
+table ReqRoomList {
+	pageCount:int;
+}
+
+table ResRoomList {
+    rooms:[Room];
+}
+
+// model class
+//-----------------------------------------------------------------------------
+table Room {
+	roomId:string;
+	count:int;
+}
