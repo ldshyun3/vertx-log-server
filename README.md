@@ -5,58 +5,53 @@ http://raindays.net:8090
 
 Server
 - Vert.x 3.2.0
-- protobuf 2.6.1
-
-WebView
-- Protobuf.js
-- jQuery
-- bootstrap
+- flatbuffers 1.3.0
 
 # Custom header
 It has 4 byte heading to figure out message type.
 
-# idl idl
-    package com.clue.idl;
+# flatbuffers idl
+    namespace com.clue.fbs.RemoteLogger;
 
-    // enumerator
+    // enum
     //-----------------------------------------------------------------------------
-    enum MessageType {
-        MsgReqJoin = 0;
-        MsgReqLog = 1;
-        MsgNotiLog = 2;
-        MsgReqRoomList = 3;
-        MsgResRoomList = 4;
+    enum MessageType : byte {
+        ReqJoin = 0,
+        ReqLog,
+        NotiLog,
+        ReqRoomList,
+        ResRoomList
     }
 
-    // request, response, notification
+    // tables
     //-----------------------------------------------------------------------------
-    message ReqJoin {
-        required string roomId = 1;
+    table ReqJoin {
+        roomId:string;
     }
 
-    message ReqLog {
-        required string message = 1;
-        required int32 level = 2;
+    table ReqLog {
+        message:string;
+        level:byte;
     }
 
-    message NotiLog {
-        required string message = 1;
-        required int32 level = 2;
+    table NotiLog {
+        message:string;
+        level:byte;
     }
 
-    message ReqRoomList {
-        required int32 pageCount = 1;
+    table ReqRoomList {
+        pageCount:int;
     }
 
-    message ResRoomList {
-        repeated Room rooms = 1;
+    table ResRoomList {
+        rooms:[RoomInfo];
     }
 
     // model class
     //-----------------------------------------------------------------------------
-    message Room {
-        required string roomId = 1;
-        required int32 count = 2;
+    table RoomInfo {
+        roomId:string;
+        count:int;
     }
 
 
@@ -68,24 +63,28 @@ It has 4 byte heading to figure out message type.
     using BestHTTP;
     using BestHTTP.WebSocket;
     using BestHTTP.WebSocket.Frames;
-    using com.clue.idl;
+    using FlatBuffers;
+    using com.clue.fbs.RemoteLogger;
 
     public class MainScene : MonoBehaviour {
         WebSocket socket = null;
-        bool connected = false;
-        ProtoLibSerializer serializer = new ProtoLibSerializer();
 
         IEnumerator Start() {
-            Connect("ws://server.to.connect:8090/remoteLogger");
-            
+            Connect("ws://localhost:8090/remoteLogger");
+
             int count = 1;
             while (true) {
                 yield return new WaitForSeconds(1);
-                if (connected) {
-                    Message message = new Message();
-                    message.message = "message from unity " + count.ToString();
-                    message.level = UnityEngine.Random.Range(0, 7);
-                    Send(MessageType.MsgReqLog, message);
+                if (socket.IsOpen) {
+                    var builder = new FlatBufferBuilder(1);
+                    var messageOffset = builder.CreateString("from unity");
+
+                    ReqLog.StartReqLog(builder);
+                    ReqLog.AddMessage(builder, messageOffset);
+                    ReqLog.AddLevel(builder, (sbyte)UnityEngine.Random.Range(0, 7));
+                    var packet = ReqLog.EndReqLog(builder);
+                    builder.Finish(packet.Value);
+                    Send(MessageType.ReqLog, builder.SizedByteArray());
                     count++;
                 }
             }
@@ -103,6 +102,12 @@ It has 4 byte heading to figure out message type.
             socket.OnClosed += WSocketOnClosed;
             socket.OnErrorDesc += WSocketOnError;
             socket.Open();
+        }
+
+        public void Send(string text) {
+            if (socket != null && socket.IsOpen) {
+                socket.Send(text);
+            }
         }
 
         public void Stop() {
@@ -125,12 +130,15 @@ It has 4 byte heading to figure out message type.
                 return;
             }
 
-            Join join = new Join();
-            join.roomId = "logTestRoom" + UnityEngine.Random.Range(0, 1000);
-            Send(MessageType.MsgReqJoin, join);
-            connected = true;
+            var builder = new FlatBufferBuilder(1);
+            var roomIdOffset = builder.CreateString("logTestRoom" + UnityEngine.Random.Range(0, 1000));
+            ReqJoin.StartReqJoin(builder);
+            ReqJoin.AddRoomId(builder, roomIdOffset);
+            var packet = ReqJoin.EndReqJoin(builder);
+            builder.Finish(packet.Value);
+            Send(MessageType.ReqJoin, builder.SizedByteArray());
         }
-        
+
         void WSocketOnMessage(WebSocket webSocket, string message) {
             if (webSocket != socket) {
                 return;
@@ -144,7 +152,6 @@ It has 4 byte heading to figure out message type.
                 return;
             }
 
-            connected = false;
             string reason = code.ToString() + " : " + message;
             Debug.LogError(reason);
         }
@@ -157,31 +164,15 @@ It has 4 byte heading to figure out message type.
             Debug.LogError(reason);
         }
 
-        byte[] Serialize(ProtoBuf.IExtensible msg) {
-            try {
-                using (var stream = new System.IO.MemoryStream()) {
-                    serializer.Serialize(stream, msg);
-                    return stream.ToArray();
-                }
-            }
-            catch (System.Exception e) {
-                Debug.LogWarning(e.StackTrace);
-                Debug.LogError(e.Message);
-            }
-            return null;
-        }
-
-        byte[] Serialize(MessageType type, ProtoBuf.IExtensible msg) {
-            byte[] data = Serialize(msg);
-            byte[] result = new byte[4 + data.Length];
-            byte[] typeBytes = BitConverter.GetBytes((int)type);
-            System.Buffer.BlockCopy(data, 0, typeBytes, 0, typeBytes.Length);
-            System.Buffer.BlockCopy(data, 0, result, 4, data.Length);
+        byte[] Serialize(byte type, byte[] message) {
+            byte[] result = new byte[1 + message.Length];
+            result[0] = type;
+            System.Buffer.BlockCopy(message, 0, result, 1, message.Length);
             return result;
         }
 
-        void Send(MessageType type, ProtoBuf.IExtensible msg){
-            byte [] data = Serialize(type, msg);
+        void Send(MessageType type, byte[] message){
+            byte [] data = Serialize((byte)type, message);
             WebSocketBinaryFrame frame = new WebSocketBinaryFrame(data, true);
             socket.Send(frame);
         }
