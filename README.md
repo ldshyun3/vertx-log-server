@@ -6,7 +6,7 @@ Protocol: flatbuffers 1.3.0<br/>
 http://raindays.net:8090
 
 # Main Implemention class
-<a href="https://github.com/Raindayus/vertx-log-server/blob/master/src/main/java/com/clue/controller/RemoteLoggerController.java">Vert.x main controller</a>
+<a href="https://github.com/Raindayus/vertx-log-server/blob/master/src/main/java/com/clue/controller/RemoteLoggerController.java">Vert.x main controller</a><br/>
 <a href="https://github.com/Raindayus/vertx-log-server/blob/master/src/main/resources/webroot/assets/js/list.js">Web view</a>
 
 # flatbuffers idl
