@@ -1,4 +1,4 @@
-Realtime log server for unity and web client
+Realtime log server for unity and web client<br/>
 Server: Vert.x 3.2.0<br/>
 Protocol: flatbuffers 1.3.0<br/>
 
