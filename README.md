@@ -1,14 +1,13 @@
 Realtime log server for unity and web client
+Server: Vert.x 3.2.0<br/>
+Protocol: flatbuffers 1.3.0<br/>
 
 # Test Server
 http://raindays.net:8090
 
-Server
-- Vert.x 3.2.0
-- flatbuffers 1.3.0
-
-# Custom header
-It has 1 byte heading to figure out message type.
+# Main Implemention class
+<a href="https://github.com/Raindayus/vertx-log-server/blob/master/src/main/java/com/clue/controller/RemoteLoggerController.java">Vert.x main controller</a>
+<a href="https://github.com/Raindayus/vertx-log-server/blob/master/src/main/resources/webroot/assets/js/list.js">Web view</a>
 
 # flatbuffers idl
     namespace com.clue.fbs.RemoteLogger;
